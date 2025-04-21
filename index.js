@@ -287,7 +287,6 @@ app.get('/Attachement/index/cours/3eme/physique3e/:filename', (req, res) => {
 app.use(express.static('public'));
 
 // Routes pour l'API
-const grammarRouter = require('./pilot/grammar');
 app.use('/api/grammar', grammarRouter);
 
 const summarizeRouter = require('./pilot/summarize');
