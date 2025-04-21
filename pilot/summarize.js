@@ -17,76 +17,69 @@ router.post('/generate', async (req, res) => {
             });
         }
 
-        // À implémenter avec une API de résumé ou un modèle d'IA
-        // Ceci est une implémentation simulée
-        
-        // Algorithme de résumé très simple
-        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-        const words = text.toLowerCase().match(/\b\w+\b/g) || [];
-        const wordCount = {};
-        
-        // Compter la fréquence des mots
-        words.forEach(word => {
-            // Ignorer les mots courts (moins de 3 lettres)
-            if (word.length < 3) return;
-            
-            // Ignorer les mots vides (à adapter selon la langue)
-            const stopWords = {
-                'fr': ['mais', 'pour', 'avec', 'dans', 'que', 'qui', 'est', 'sont', 'les', 'des', 'une', 'donc', 'car'],
-                'en': ['but', 'for', 'with', 'in', 'that', 'who', 'are', 'is', 'the', 'and', 'to', 'of', 'a', 'an']
-            };
-            
-            const stopWordsList = stopWords[language.substring(0, 2)] || stopWords['en'];
-            if (stopWordsList.includes(word)) return;
-            
-            wordCount[word] = (wordCount[word] || 0) + 1;
-        });
-        
-        // Extraire les mots les plus fréquents comme mots-clés
-        const keywords = Object.entries(wordCount)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 6)
-            .map(entry => entry[0]);
-        
-        // Générer un résumé (sélection des phrases les plus importantes)
-        let summary;
-        if (sentences.length <= 3) {
-            summary = text; // Si le texte est court, le renvoyer tel quel
-        } else {
-            // Sélectionner environ 30% des phrases, mais au moins 2
-            const numSentencesToKeep = Math.max(2, Math.ceil(sentences.length * 0.3));
-            
-            // Évaluer l'importance de chaque phrase en fonction des mots-clés qu'elle contient
-            const sentenceScores = sentences.map(sentence => {
-                const wordsInSentence = sentence.toLowerCase().match(/\b\w+\b/g) || [];
-                let score = 0;
-                keywords.forEach(keyword => {
-                    if (wordsInSentence.includes(keyword)) {
-                        score += 1;
-                    }
-                });
-                return { sentence, score };
+        // Récupération de la clé API depuis les variables d'environnement
+        const TEXTGEARS_API_KEY = process.env.TEXTGEARS_API_KEY;
+
+        if (!TEXTGEARS_API_KEY) {
+            console.error('Clé API TextGears manquante');
+            return res.status(500).json({
+                error: 'Configuration du service incomplète'
             });
-            
-            // Sélectionner les phrases les plus importantes
-            const topSentences = sentenceScores
-                .sort((a, b) => b.score - a.score)
-                .slice(0, numSentencesToKeep)
-                .sort((a, b) => sentences.indexOf(a.sentence) - sentences.indexOf(b.sentence)) // Remettre dans l'ordre original
-                .map(item => item.sentence);
-            
-            summary = topSentences.join('. ') + '.';
         }
 
-        // Réponse formatée
-        const response = {
-            original: text,
-            summary: summary,
-            keywords: keywords,
-            language: language
-        };
+        // Conversion du code de langue pour TextGears
+        const langCode = 
+            language === 'fr' ? 'fr-FR' : 
+            language === 'en-US' ? 'en-US' :
+            language === 'en-GB' ? 'en-GB' :
+            language === 'en-ZA' ? 'en-ZA' :
+            language === 'en-AU' ? 'en-AU' :
+            language === 'en-NZ' ? 'en-NZ' :
+            language === 'en' ? 'en-GB' :
+            language === 'de-DE' ? 'de-DE' :
+            language === 'de-AT' ? 'de-AT' :
+            language === 'de-CH' ? 'de-CH' :
+            language === 'de' ? 'de-DE' :
+            language === 'pt-PT' ? 'pt-PT' :
+            language === 'pt-BR' ? 'pt-BR' :
+            language === 'it-IT' ? 'it-IT' :
+            language === 'it' ? 'it-IT' :
+            language === 'ar-AR' ? 'ar-AR' :
+            language === 'ru-RU' ? 'ru-RU' :
+            language === 'es-ES' ? 'es-ES' :
+            language === 'es' ? 'es-ES' :
+            language === 'ja-JP' ? 'ja-JP' :
+            language === 'zh-CN' ? 'zh-CN' :
+            language === 'el-GR' ? 'el-GR' : 'en-GB';
 
-        return res.json(response);
+        // Appel à l'API TextGears pour le résumé
+        const apiResponse = await axios.get('https://api.textgears.com/summarize', {
+            params: {
+                text: text,
+                language: langCode,
+                key: TEXTGEARS_API_KEY
+            }
+        });
+
+        // Traitement de la réponse de l'API
+        if (apiResponse.data && apiResponse.data.status) {
+            const keywords = apiResponse.data.response?.keywords || [];
+            const summary = apiResponse.data.response?.summary?.join(' ') || text;
+            const highlight = apiResponse.data.response?.highlight || [];
+
+            // Création de la réponse
+            const response = {
+                original: text,
+                summary: summary,
+                keywords: keywords,
+                highlights: highlight,
+                language: language
+            };
+
+            return res.json(response);
+        } else {
+            throw new Error('Réponse invalide de l\'API TextGears');
+        }
 
     } catch (error) {
         console.error('Erreur de génération de résumé:', error);
