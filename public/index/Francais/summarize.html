@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Correction Grammaticale</title>
+    <title>Résumé et mots-clés</title>
     <link rel="stylesheet" href="/styles.css">
     <style>
         body {
@@ -42,10 +43,48 @@
             position: relative;
         }
 
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links-container {
+            width: 100%;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+
         .nav-links {
             display: flex;
-            justify-content: center;
-            margin: 1rem 0;
+            width: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            padding-bottom: 5px;
+            position: relative;
+            transition: transform 0.3s ease;
+            justify-content: flex-start;
+            gap: 5px;
+            padding: 5px 0;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
 
         .nav-link {
@@ -56,6 +95,15 @@
             border-radius: 20px;
             text-decoration: none;
             transition: background 0.3s, transform 0.3s;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            text-align: center;
+            min-width: 150px;
+            max-width: 200px;
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .nav-link:hover {
@@ -68,6 +116,59 @@
             font-weight: bold;
         }
 
+        /* Navigation dots */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 10px;
+            height: 10px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .left-indicator {
+            left: 0;
+        }
+
+        .right-indicator {
+            right: 0;
+        }
+
         .correction-form {
             background-color: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
@@ -77,9 +178,7 @@
             box-sizing: border-box;
         }
 
-        textarea {
-            min-height: 150px;
-            resize: vertical;
+        input, select, button, textarea {
             padding: 0.8rem;
             margin: 0.5rem 0;
             border-radius: 8px;
@@ -88,24 +187,17 @@
             box-sizing: border-box;
         }
 
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
         select {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
             background-color: white;
             color: #333;
         }
 
         button {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
             background: linear-gradient(to right, #f857a6, #ff5858);
             color: white;
             font-weight: bold;
@@ -136,17 +228,6 @@
             font-weight: bold;
         }
 
-        .language-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: linear-gradient(to right, #11998e, #38ef7d);
-            border-radius: 20px;
-            color: white;
-            font-weight: bold;
-            margin: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
         .text-box {
             font-size: 1.2rem;
             margin: 1rem 0;
@@ -154,23 +235,7 @@
             border-radius: 8px;
             background-color: rgba(0, 0, 0, 0.1);
             word-wrap: break-word;
-        }
-
-        .error-details {
-            margin: 1rem 0;
-            padding: 1rem;
-            border-radius: 8px;
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .error-item {
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .error-item:last-child {
-            border-bottom: none;
+            text-align: left;
         }
 
         .back-btn {
@@ -221,39 +286,44 @@
             50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
             100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
         }
-        .erreur-texte {
-            font-weight: bold;
+
+        .keywords-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
         }
-        .no-errors {
-            font-style: italic;
-        }
-        .error-message {
-            color: red;
+
+        .keyword {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="sparkle">✨ Correction Grammaticale ✨</h1>
+        <h1 class="sparkle">✨ Résumé et mots-clés ✨</h1>
 
         <div class="nav-links-container">
             <div class="nav-links" id="navLinks">
                 <a href="/francais" class="nav-link">Correction de Texte</a>
-                <a href="/grammaire" class="nav-link active">Correction Grammaticale</a>
-                <a href="/summarize" class="nav-link">Résumé et mots-clés</a>
+                <a href="/grammaire" class="nav-link">Correction Grammaticale</a>
+                <a href="/summarize" class="nav-link active">Résumé et mots-clés</a>
             </div>
             <div class="nav-dots">
                 <span class="dot"></span>
-                <span class="dot active"></span>
                 <span class="dot"></span>
+                <span class="dot active"></span>
             </div>
             <div class="scroll-indicator left-indicator">◀</div>
             <div class="scroll-indicator right-indicator">▶</div>
         </div>
 
         <div class="correction-form">
-            <form id="grammar-form">
-                <textarea id="texte-input" placeholder="Entrez votre texte à corriger" required></textarea>
+            <form id="summarize-form">
+                <textarea id="texte-input" placeholder="Entrez votre texte à résumer" required></textarea>
                 <select id="langue-select">
                     <optgroup label="Français">
                         <option value="fr-FR">Français (France)</option>
@@ -286,23 +356,20 @@
                         <option value="ar-AR">Arabe</option>
                     </optgroup>
                 </select>
-                <button type="submit">Corriger la grammaire</button>
+                <button type="submit">Générer le résumé</button>
             </form>
         </div>
 
         <div id="result-card" class="result-card">
-            <div class="label">Langue détectée</div>
-            <div id="langue-detectee" class="language-badge">Anglais</div>
-
             <div class="label">Texte original</div>
             <div id="texte-original" class="text-box"></div>
 
-            <div class="label">Texte corrigé</div>
-            <div id="texte-corrige" class="text-box"></div>
+            <div class="label">Résumé</div>
+            <div id="texte-resume" class="text-box"></div>
 
-            <div class="label">Détails des erreurs</div>
-            <div id="erreurs-details" class="error-details">
-                <!-- Les détails des erreurs seront injectés ici -->
+            <div class="label">Mots-clés</div>
+            <div id="mots-cles" class="keywords-container">
+                <!-- Les mots-clés seront injectés ici -->
             </div>
         </div>
 
@@ -311,26 +378,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('grammar-form');
+            const form = document.getElementById('summarize-form');
             const resultCard = document.getElementById('result-card');
             const texteOriginal = document.getElementById('texte-original');
-            const texteCorrige = document.getElementById('texte-corrige');
-            const langueDetectee = document.getElementById('langue-detectee');
-            const erreursDetails = document.getElementById('erreurs-details');
+            const texteResume = document.getElementById('texte-resume');
+            const motsCles = document.getElementById('mots-cles');
             const navLinks = document.getElementById('navLinks');
             const dots = document.querySelectorAll('.dot');
-            const links = navLinks ? navLinks.querySelectorAll('.nav-link') : [];
+            const links = navLinks.querySelectorAll('.nav-link');
 
             // Variables pour le défilement tactile
             let startX, scrollLeft, isDragging = false;
-            let currentIndex = 1; // Correction Grammaticale est active (index 1)
+            let currentIndex = 2; // Résumé et mots-clés est active (index 2)
 
-            // Initialiser le défilement horizontal si navLinks existe
-            if (navLinks) {
-                initSwipe();
-            }
-
-            // Fonction pour initialiser le défilement
+            // Initialiser le défilement horizontal
             function initSwipe() {
                 navLinks.addEventListener('mousedown', startDrag);
                 navLinks.addEventListener('touchstart', startDrag, { passive: true });
@@ -407,6 +468,30 @@
                 });
             }
 
+            // Naviguer vers la page correspondante quand l'index change
+            navLinks.addEventListener('scroll', function() {
+                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
+                const scrollIndex = Math.round(navLinks.scrollLeft / linkWidth);
+
+                if (scrollIndex !== currentIndex) {
+                    currentIndex = scrollIndex;
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+
+                    // Si l'utilisateur fait défiler vers un autre onglet, naviguer vers cette page
+                    if (currentIndex === 0) {
+                        window.location.href = '/francais';
+                    } else if (currentIndex === 1) {
+                        window.location.href = '/grammaire';
+                    }
+                }
+            });
+
+            // Initialiser le défilement horizontal
+            initSwipe();
+
+            // Gérer la soumission du formulaire
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
@@ -418,7 +503,8 @@
                 texteOriginal.textContent = texte;
 
                 try {
-                    const response = await fetch('/api/grammar/check', { // Placeholder API endpoint
+                    // Appel à l'API de résumé
+                    const response = await fetch('/api/summarize/generate', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -431,67 +517,27 @@
                     }
 
                     const result = await response.json();
-
-                    // Utilisation des résultats de l'API
-                    texteCorrige.textContent = result.corrected;
-
-                    // Afficher la langue
-                    const langMap = {
-                        'fr-FR': 'Français (France)',
-                        'en-GB': 'Anglais (Royaume-Uni)',
-                        'en-US': 'Anglais (États-Unis)',
-                        'en-ZA': 'Anglais (Afrique du Sud)',
-                        'en-AU': 'Anglais (Australie)',
-                        'en-NZ': 'Anglais (Nouvelle-Zélande)',
-                        'de-DE': 'Allemand (Allemagne)',
-                        'de-AT': 'Allemand (Autriche)',
-                        'de-CH': 'Allemand (Suisse)',
-                        'pt-PT': 'Portugais (Portugal)',
-                        'pt-BR': 'Portugais (Brésil)',
-                        'es-ES': 'Espagnol',
-                        'it-IT': 'Italien',
-                        'ru-RU': 'Russe',
-                        'el-GR': 'Grec',
-                        'ja-JP': 'Japonais',
-                        'zh-CN': 'Chinois (Simplifié)',
-                        'ar-AR': 'Arabe',
-                        'fr': 'Français',
-                        'en': 'Anglais',
-                        'es': 'Espagnol',
-                        'de': 'Allemand',
-                        'it': 'Italien'
-                    };
-
-                    langueDetectee.textContent = langMap[result.language] || result.language;
-
-                    // Afficher les erreurs
-                    if (result.errors && result.errors.length > 0) {
-                        // Vider le conteneur d'erreurs
-                        erreursDetails.innerHTML = '';
-
-                        // Ajouter chaque erreur
-                        result.errors.forEach(erreur => {
-                            const erreurElement = document.createElement('div');
-                            erreurElement.classList.add('error-item');
-
-                            erreurElement.innerHTML = `
-                                <div class="erreur-texte">Texte incorrect: <span style="color: #ff6b6b;">${erreur.text}</span></div>
-                                <div class="erreur-message">Problème: ${erreur.message}</div>
-                                <div class="erreur-suggestions">Suggestions: <span style="color: #51cf66; font-weight: bold;">${erreur.suggestions.join(', ')}</span></div>
-                            `;
-
-                            erreursDetails.appendChild(erreurElement);
-                        });
-                    } else {
-                        erreursDetails.innerHTML = '<div class="no-errors">Aucune erreur grammaticale détectée.</div>';
-                    }
-
+                    
+                    // Afficher le résumé
+                    texteResume.textContent = result.summary;
+                    
+                    // Afficher les mots-clés
+                    motsCles.innerHTML = '';
+                    result.keywords.forEach(keyword => {
+                        const keywordElement = document.createElement('span');
+                        keywordElement.classList.add('keyword');
+                        keywordElement.textContent = keyword;
+                        motsCles.appendChild(keywordElement);
+                    });
+                    
+                    // Afficher les résultats
                     resultCard.style.display = 'block';
                     resultCard.scrollIntoView({ behavior: 'smooth' });
+                    
                 } catch (error) {
                     console.error('Erreur:', error);
-                    texteCorrige.textContent = `Erreur: ${error.message}`;
-                    erreursDetails.innerHTML = '<div class="error-message">Une erreur est survenue.</div>';
+                    texteResume.textContent = `Erreur: ${error.message}`;
+                    motsCles.innerHTML = '<p>Une erreur est survenue lors de la génération des mots-clés.</p>';
                     resultCard.style.display = 'block';
                     resultCard.scrollIntoView({ behavior: 'smooth' });
                 }

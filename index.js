@@ -286,8 +286,12 @@ app.get('/Attachement/index/cours/3eme/physique3e/:filename', (req, res) => {
 // Routes statiques
 app.use(express.static('public'));
 
-// API routes
+// Routes pour l'API
+const grammarRouter = require('./pilot/grammar');
 app.use('/api/grammar', grammarRouter);
+
+const summarizeRouter = require('./pilot/summarize');
+app.use('/api/summarize', summarizeRouter);
 
 // Route principale
 app.get('/', (req, res) => {
@@ -296,11 +300,15 @@ app.get('/', (req, res) => {
 
 // Routes pour les pages françaises
 app.get('/francais', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index', 'Francais', 'francais.html'));
+  res.sendFile(path.join(__dirname, 'public/index/Francais/francais.html'));
 });
 
 app.get('/grammaire', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index', 'Francais', 'grammaire.html'));
+  res.sendFile(path.join(__dirname, 'public/index/Francais/grammaire.html'));
+});
+
+app.get('/summarize', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index/Francais/summarize.html'));
 });
 
 // Démarrer le serveur
