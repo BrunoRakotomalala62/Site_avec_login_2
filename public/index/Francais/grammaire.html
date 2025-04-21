@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction Grammaticale</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 600px;
+            margin: 2rem;
+            animation: fadeIn 1s ease-out;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #f9d423, #e14fad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .nav-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
+        .correction-form {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: white;
+            color: #333;
+        }
+
+        button {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            background: linear-gradient(to right, #f857a6, #ff5858);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+            text-align: left;
+        }
+
+        .label {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .language-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .text-box {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+        }
+
+        .error-details {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .error-item {
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-item:last-child {
+            border-bottom: none;
+        }
+
+        .back-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sparkle {
+            position: relative;
+        }
+
+        .sparkle::before, .sparkle::after {
+            content: "✨";
+            position: absolute;
+            font-size: 1.5rem;
+        }
+
+        .sparkle::before {
+            top: -10px;
+            left: -15px;
+            animation: sparkleAnimation 2s infinite;
+        }
+
+        .sparkle::after {
+            bottom: -10px;
+            right: -15px;
+            animation: sparkleAnimation 3s infinite 1s;
+        }
+
+        @keyframes sparkleAnimation {
+            0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+            100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+        }
+        .erreur-texte {
+            font-weight: bold;
+        }
+        .no-errors {
+            font-style: italic;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="sparkle">✨ Correction Grammaticale ✨</h1>
+
+        <div class="nav-links">
+            <a href="/selectionner/francais.html" class="nav-link">Correction de Texte</a>
+            <a href="/selectionner/grammaire.html" class="nav-link active">Correction Grammaticale</a>
+        </div>
+
+        <div class="correction-form">
+            <form id="grammar-form">
+                <textarea id="texte-input" placeholder="Entrez votre texte à corriger" required></textarea>
+                <select id="langue-select">
+                    <optgroup label="Français">
+                        <option value="fr-FR">Français (France)</option>
+                    </optgroup>
+                    <optgroup label="Anglais">
+                        <option value="en-GB" selected>Anglais (Royaume-Uni)</option>
+                        <option value="en-US">Anglais (États-Unis)</option>
+                        <option value="en-ZA">Anglais (Afrique du Sud)</option>
+                        <option value="en-AU">Anglais (Australie)</option>
+                        <option value="en-NZ">Anglais (Nouvelle-Zélande)</option>
+                    </optgroup>
+                    <optgroup label="Allemand">
+                        <option value="de-DE">Allemand (Allemagne)</option>
+                        <option value="de-AT">Allemand (Autriche)</option>
+                        <option value="de-CH">Allemand (Suisse)</option>
+                    </optgroup>
+                    <optgroup label="Portugais">
+                        <option value="pt-PT">Portugais (Portugal)</option>
+                        <option value="pt-BR">Portugais (Brésil)</option>
+                    </optgroup>
+                    <optgroup label="Autres langues européennes">
+                        <option value="es-ES">Espagnol</option>
+                        <option value="it-IT">Italien</option>
+                        <option value="ru-RU">Russe</option>
+                        <option value="el-GR">Grec</option>
+                    </optgroup>
+                    <optgroup label="Langues asiatiques">
+                        <option value="ja-JP">Japonais</option>
+                        <option value="zh-CN">Chinois (Simplifié)</option>
+                        <option value="ar-AR">Arabe</option>
+                    </optgroup>
+                </select>
+                <button type="submit">Corriger la grammaire</button>
+            </form>
+        </div>
+
+        <div id="result-card" class="result-card">
+            <div class="label">Langue détectée</div>
+            <div id="langue-detectee" class="language-badge">Anglais</div>
+
+            <div class="label">Texte original</div>
+            <div id="texte-original" class="text-box"></div>
+
+            <div class="label">Texte corrigé</div>
+            <div id="texte-corrige" class="text-box"></div>
+
+            <div class="label">Détails des erreurs</div>
+            <div id="erreurs-details" class="error-details">
+                <!-- Les détails des erreurs seront injectés ici -->
+            </div>
+        </div>
+
+        <a href="/" class="back-btn">Retour à l'accueil</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('grammar-form');
+            const resultCard = document.getElementById('result-card');
+            const texteOriginal = document.getElementById('texte-original');
+            const texteCorrige = document.getElementById('texte-corrige');
+            const langueDetectee = document.getElementById('langue-detectee');
+            const erreursDetails = document.getElementById('erreurs-details');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const texte = document.getElementById('texte-input').value;
+                const langue = document.getElementById('langue-select').value;
+
+                if (!texte) return;
+
+                texteOriginal.textContent = texte;
+
+                try {
+                    const response = await fetch('/api/grammar/check', { // Placeholder API endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: texte, language: langue })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    // Utilisation des résultats de l'API
+                    texteCorrige.textContent = result.corrected;
+
+                    // Afficher la langue
+                    const langMap = {
+                        'fr-FR': 'Français (France)',
+                        'en-GB': 'Anglais (Royaume-Uni)',
+                        'en-US': 'Anglais (États-Unis)',
+                        'en-ZA': 'Anglais (Afrique du Sud)',
+                        'en-AU': 'Anglais (Australie)',
+                        'en-NZ': 'Anglais (Nouvelle-Zélande)',
+                        'de-DE': 'Allemand (Allemagne)',
+                        'de-AT': 'Allemand (Autriche)',
+                        'de-CH': 'Allemand (Suisse)',
+                        'pt-PT': 'Portugais (Portugal)',
+                        'pt-BR': 'Portugais (Brésil)',
+                        'es-ES': 'Espagnol',
+                        'it-IT': 'Italien',
+                        'ru-RU': 'Russe',
+                        'el-GR': 'Grec',
+                        'ja-JP': 'Japonais',
+                        'zh-CN': 'Chinois (Simplifié)',
+                        'ar-AR': 'Arabe',
+                        'fr': 'Français',
+                        'en': 'Anglais',
+                        'es': 'Espagnol',
+                        'de': 'Allemand',
+                        'it': 'Italien'
+                    };
+
+                    langueDetectee.textContent = langMap[result.language] || result.language;
+
+                    // Afficher les erreurs
+                    if (result.errors && result.errors.length > 0) {
+                        // Vider le conteneur d'erreurs
+                        erreursDetails.innerHTML = '';
+
+                        // Ajouter chaque erreur
+                        result.errors.forEach(erreur => {
+                            const erreurElement = document.createElement('div');
+                            erreurElement.classList.add('error-item');
+
+                            erreurElement.innerHTML = `
+                                <div class="erreur-texte">Texte incorrect: <span style="color: #ff6b6b;">${erreur.text}</span></div>
+                                <div class="erreur-message">Problème: ${erreur.message}</div>
+                                <div class="erreur-suggestions">Suggestions: <span style="color: #51cf66; font-weight: bold;">${erreur.suggestions.join(', ')}</span></div>
+                            `;
+
+                            erreursDetails.appendChild(erreurElement);
+                        });
+                    } else {
+                        erreursDetails.innerHTML = '<div class="no-errors">Aucune erreur grammaticale détectée.</div>';
+                    }
+
+                    resultCard.style.display = 'block';
+                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    texteCorrige.textContent = `Erreur: ${error.message}`;
+                    erreursDetails.innerHTML = '<div class="error-message">Une erreur est survenue.</div>';
+                    resultCard.style.display = 'block';
+                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

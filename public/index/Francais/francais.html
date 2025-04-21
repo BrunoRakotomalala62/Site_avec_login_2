@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service de Correction - FRANCAIS</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 600px;
+            margin: 2rem;
+            animation: fadeIn 1s ease-out;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #f9d423, #e14fad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .service-description {
+            opacity: 0.8;
+        }
+
+        .correction-form {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input, select, button, textarea {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        select {
+            background-color: white;
+            color: #333;
+        }
+
+        button {
+            background: linear-gradient(to right, #f857a6, #ff5858);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .label {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .text-box {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        /* Navigation links container */
+        .nav-links-container {
+            width: 100%;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            width: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            padding-bottom: 5px;
+            position: relative;
+            transition: transform 0.3s ease;
+            justify-content: flex-start;
+            gap: 5px;
+            padding: 5px 0;
+        }
+
+        .nav-links::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .nav-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.3s;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            text-align: center;
+            min-width: 150px;
+            max-width: 200px;
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
+        /* Navigation dots */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 10px;
+            height: 10px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .left-indicator {
+            left: 0;
+        }
+
+        .right-indicator {
+            right: 0;
+        }
+
+        .sparkle {
+            position: relative;
+        }
+
+        .sparkle::before, .sparkle::after {
+            content: "✨";
+            position: absolute;
+            font-size: 1.5rem;
+        }
+
+        .sparkle::before {
+            top: -10px;
+            left: -15px;
+            animation: sparkleAnimation 2s infinite;
+        }
+
+        .sparkle::after {
+            bottom: -10px;
+            right: -15px;
+            animation: sparkleAnimation 3s infinite 1s;
+        }
+
+        @keyframes sparkleAnimation {
+            0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+            100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="sparkle">✨ Correction de Texte Français ✨</h1>
+
+        <div class="nav-links-container">
+            <div class="nav-links" id="navLinks">
+                <a href="/selectionner/francais.html" class="nav-link active">Correction de Texte</a>
+                <a href="/selectionner/grammaire.html" class="nav-link">Correction Grammaticale</a>
+                <a href="/selectionner/ai/summary.html" class="nav-link">Summarization and keywords extraction</a>
+            </div>
+            <div class="nav-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div class="scroll-indicator left-indicator">◀</div>
+            <div class="scroll-indicator right-indicator">▶</div>
+        </div>
+
+        <div class="correction-form">
+            <form id="correction-form">
+                <textarea id="texte-input" placeholder="Entrez votre texte à corriger" required></textarea>
+                <select id="langue-select">
+                    <optgroup label="Français">
+                        <option value="fr-FR">Français (France)</option>
+                    </optgroup>
+                    <optgroup label="Anglais">
+                        <option value="en-GB" selected>Anglais (Royaume-Uni)</option>
+                        <option value="en-US">Anglais (États-Unis)</option>
+                        <option value="en-ZA">Anglais (Afrique du Sud)</option>
+                        <option value="en-AU">Anglais (Australie)</option>
+                        <option value="en-NZ">Anglais (Nouvelle-Zélande)</option>
+                    </optgroup>
+                    <optgroup label="Allemand">
+                        <option value="de-DE">Allemand (Allemagne)</option>
+                        <option value="de-AT">Allemand (Autriche)</option>
+                        <option value="de-CH">Allemand (Suisse)</option>
+                    </optgroup>
+                    <optgroup label="Portugais">
+                        <option value="pt-PT">Portugais (Portugal)</option>
+                        <option value="pt-BR">Portugais (Brésil)</option>
+                    </optgroup>
+                    <optgroup label="Autres langues européennes">
+                        <option value="es-ES">Espagnol</option>
+                        <option value="it-IT">Italien</option>
+                        <option value="ru-RU">Russe</option>
+                        <option value="el-GR">Grec</option>
+                    </optgroup>
+                    <optgroup label="Langues asiatiques">
+                        <option value="ja-JP">Japonais</option>
+                        <option value="zh-CN">Chinois (Simplifié)</option>
+                        <option value="ar-AR">Arabe</option>
+                    </optgroup>
+                </select>
+                <button type="submit">Corriger le texte</button>
+            </form>
+        </div>
+
+        <div id="result-card" class="result-card">
+            <div class="label">Langue détectée</div>
+            <div id="langue-detectee" class="language-badge">Français</div>
+
+            <div class="label">Texte original</div>
+            <div id="texte-original" class="text-box"></div>
+
+            <div class="label">Texte corrigé</div>
+            <div id="texte-corrige" class="text-box"></div>
+        </div>
+
+        <a href="/" class="back-btn">Retour à l'accueil</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('correction-form');
+            const resultCard = document.getElementById('result-card');
+            const texteOriginal = document.getElementById('texte-original');
+            const texteCorrige = document.getElementById('texte-corrige');
+            const langueDetectee = document.getElementById('langue-detectee');
+            const navLinks = document.getElementById('navLinks');
+            const dots = document.querySelectorAll('.dot');
+            const links = navLinks.querySelectorAll('.nav-link');
+
+            // Variables pour le défilement tactile
+            let startX, scrollLeft, isDragging = false;
+            let currentIndex = 0;
+
+            // Initialiser le défilement horizontal
+            function initSwipe() {
+                navLinks.addEventListener('mousedown', startDrag);
+                navLinks.addEventListener('touchstart', startDrag, { passive: true });
+
+                navLinks.addEventListener('mousemove', drag);
+                navLinks.addEventListener('touchmove', drag, { passive: false });
+
+                navLinks.addEventListener('mouseup', endDrag);
+                navLinks.addEventListener('mouseleave', endDrag);
+                navLinks.addEventListener('touchend', endDrag);
+
+                // Ajouter des événements pour les points de navigation
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        scrollToIndex(index);
+                    });
+                });
+
+                // Ajouter des événements pour les indicateurs de défilement
+                document.querySelector('.left-indicator').addEventListener('click', () => {
+                    scrollToIndex(currentIndex - 1);
+                });
+
+                document.querySelector('.right-indicator').addEventListener('click', () => {
+                    scrollToIndex(currentIndex + 1);
+                });
+            }
+
+            // Fonction pour commencer le défilement
+            function startDrag(e) {
+                isDragging = true;
+                startX = e.type === 'touchstart' ? e.touches[0].pageX : e.pageX;
+                scrollLeft = navLinks.scrollLeft;
+                navLinks.style.cursor = 'grabbing';
+            }
+
+            // Fonction pour défiler
+            function drag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.type === 'touchmove' ? e.touches[0].pageX : e.pageX;
+                const walk = (x - startX);
+                navLinks.scrollLeft = scrollLeft - walk;
+            }
+
+            // Fonction pour terminer le défilement
+            function endDrag() {
+                if (!isDragging) return;
+                isDragging = false;
+                navLinks.style.cursor = 'grab';
+
+                // Identifier l'élément le plus proche du centre et y défiler
+                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
+                const scrollSnapIndex = Math.round(navLinks.scrollLeft / linkWidth);
+                scrollToIndex(scrollSnapIndex);
+            }
+
+            // Faire défiler vers un index spécifique
+            function scrollToIndex(index) {
+                if (index < 0) index = 0;
+                if (index >= links.length) index = links.length - 1;
+
+                currentIndex = index;
+
+                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
+                navLinks.scrollTo({
+                    left: linkWidth * index,
+                    behavior: 'smooth'
+                });
+
+                // Mettre à jour les points
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+            }
+
+            // Surveiller le défilement pour mettre à jour les points
+            navLinks.addEventListener('scroll', function() {
+                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
+                const scrollIndex = Math.round(navLinks.scrollLeft / linkWidth);
+
+                if (scrollIndex !== currentIndex) {
+                    currentIndex = scrollIndex;
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+                }
+            });
+
+            // Initialiser le défilement horizontal
+            initSwipe();
+
+            // Gérer la soumission du formulaire
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const texte = document.getElementById('texte-input').value;
+                const langue = document.getElementById('langue-select').value;
+
+                if (!texte) return;
+
+                texteOriginal.textContent = texte;
+
+                try {
+                    // Récupérer la langue sélectionnée
+                    const langueSelect = document.getElementById('langue-select');
+                    const langue = langueSelect ? langueSelect.value : 'fr';
+
+                    const response = await fetch('/api/grammar/correct', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: texte, language: langue })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    // Utilisation des résultats de l'API
+                    texteCorrige.textContent = result.corrected;
+
+                    // Afficher la langue correspondant à la valeur sélectionnée
+                    langueDetectee.textContent = result.language === 'fr' ? 'Français' :
+                        result.language === 'en' ? 'Anglais' :
+                        result.language === 'es' ? 'Espagnol' :
+                        result.language === 'de' ? 'Allemand' : 'Italien';
+
+                    resultCard.style.display = 'block';
+                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    texteCorrige.textContent = `Erreur: ${error.message}`;
+                    resultCard.style.display = 'block';
+                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
