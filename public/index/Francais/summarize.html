@@ -4,254 +4,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résumé et mots-clés</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Résumé et mots-clés - Éducation Malagasy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
             min-height: 100vh;
+            background: linear-gradient(135deg, #8A2BE2, #4B0082, #9400D3, #8A2BE2);
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
             display: flex;
             flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
             align-items: center;
         }
 
-        .container {
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            width: 600px;
-            margin: 2rem;
-            animation: fadeIn 1s ease-out;
-            text-align: center;
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
         }
 
-        h1 {
-            margin-bottom: 1.5rem;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(to right, #f9d423, #e14fad);
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, #FFD700);
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent;
-            position: relative;
-        }
-
-        .service-card {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            color: white;
-            display: block;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-links-container {
-            width: 100%;
-            overflow: hidden;
-            margin: 1rem 0;
-            position: relative;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
             display: flex;
-            width: 100%;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-            padding-bottom: 5px;
-            position: relative;
-            transition: transform 0.3s ease;
-            justify-content: flex-start;
-            gap: 5px;
-            padding: 5px 0;
+            gap: 1.5rem;
         }
 
-        .nav-links::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-
-        .nav-link {
-            background: rgba(255, 255, 255, 0.2);
+        .nav-links a {
             color: white;
+            text-decoration: none;
             padding: 0.5rem 1rem;
-            margin: 0 0.5rem;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: background 0.3s, transform 0.3s;
-            white-space: nowrap;
-            flex: 0 0 auto;
-            text-align: center;
-            min-width: 150px;
-            max-width: 200px;
-            scroll-snap-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.4);
-            font-weight: bold;
-        }
-
-        /* Navigation dots */
-        .nav-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            margin: 0 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .dot.active {
-            background-color: rgba(255, 255, 255, 0.8);
-            width: 10px;
-            height: 10px;
-        }
-
-        .scroll-indicator {
+        .nav-links a:before {
+            content: '';
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: -1;
+            border-radius: 30px;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            position: relative;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .sparkle {
+            color: #FFD700;
+            font-size: 2rem;
+            animation: sparkleAnim 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        @keyframes sparkleAnim {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .main-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .tabs {
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            color: white;
             cursor: pointer;
-            z-index: 10;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-
-        .scroll-indicator:hover {
-            opacity: 1;
-        }
-
-        .left-indicator {
-            left: 0;
-        }
-
-        .right-indicator {
-            right: 0;
-        }
-
-        .correction-form {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input, select, button, textarea {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border-radius: 8px;
+            transition: all 0.3s ease;
             border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .tab:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: -1;
+            border-radius: 30px;
+        }
+
+        .tab:hover:before {
             width: 100%;
-            box-sizing: border-box;
         }
 
-        textarea {
-            min-height: 150px;
-            resize: vertical;
+        .tab.active {
+            background: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
         }
 
-        select {
-            background-color: white;
-            color: #333;
-        }
-
-        button {
-            background: linear-gradient(to right, #f857a6, #ff5858);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .result-card {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
+        .tab-content {
             display: none;
-            text-align: left;
         }
 
-        .label {
-            display: inline-block;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 0.3rem 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .text-box {
-            font-size: 1.2rem;
-            margin: 1rem 0;
-            padding: 1rem;
-            border-radius: 8px;
-            background-color: rgba(0, 0, 0, 0.1);
-            word-wrap: break-word;
-            text-align: left;
-        }
-
-        .back-btn {
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .back-btn:hover {
-            background: rgba(0, 0, 0, 0.5);
-            transform: translateY(-2px);
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
@@ -259,288 +201,687 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .sparkle {
+        .form-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #FFD700;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            padding-right: 3rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
             position: relative;
+            overflow: hidden;
         }
 
-        .sparkle::before, .sparkle::after {
-            content: "✨";
+        .btn:before {
+            content: '';
             position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .result-container {
+            margin-top: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            color: #FFD700;
+            margin-bottom: 1rem;
             font-size: 1.5rem;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 0.5rem;
         }
 
-        .sparkle::before {
-            top: -10px;
-            left: -15px;
-            animation: sparkleAnimation 2s infinite;
+        .result-content {
+            margin-bottom: 1.5rem;
         }
 
-        .sparkle::after {
-            bottom: -10px;
-            right: -15px;
-            animation: sparkleAnimation 3s infinite 1s;
+        .result-section {
+            margin-bottom: 1.5rem;
         }
 
-        @keyframes sparkleAnimation {
-            0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
-            100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+        .result-section h3 {
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .keywords-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 0.5rem;
         }
 
         .keyword {
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 215, 0, 0.2);
+            padding: 0.4rem 1rem;
             border-radius: 20px;
-            padding: 5px 15px;
             font-size: 0.9rem;
+            display: inline-block;
+            animation: keywordPulse 2s infinite alternate;
+        }
+
+        @keyframes keywordPulse {
+            0% { transform: scale(1); background: rgba(255, 215, 0, 0.2); }
+            100% { transform: scale(1.05); background: rgba(255, 215, 0, 0.3); }
+        }
+
+        .highlights {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .status-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .status-message.show {
+            opacity: 1;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #FFD700;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .pagination-dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            background: #FFD700;
+            transform: scale(1.2);
+        }
+
+        .floating-objects {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-object {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+
+            .main-title h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Waves effect at the bottom */
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            z-index: -1;
+        }
+
+        .wave-container svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 150px;
+        }
+
+        .wave-container .shape-fill {
+            fill: rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="sparkle">✨ Résumé et mots-clés ✨</h1>
+    <div class="floating-objects" id="floatingObjects"></div>
 
-        <div class="nav-links-container">
-            <div class="nav-links" id="navLinks">
-                <a href="/francais" class="nav-link">Correction de Texte</a>
-                <a href="/grammaire" class="nav-link">Correction Grammaticale</a>
-                <a href="/summarize" class="nav-link active">Résumé et mots-clés</a>
-            </div>
-            <div class="nav-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot active"></span>
-            </div>
-            <div class="scroll-indicator left-indicator">◀</div>
-            <div class="scroll-indicator right-indicator">▶</div>
-        </div>
-
-        <div class="correction-form">
-            <form id="summarize-form">
-                <textarea id="texte-input" placeholder="Entrez votre texte à résumer" required></textarea>
-                <select id="langue-select">
-                    <optgroup label="Français">
-                        <option value="fr-FR">Français (France)</option>
-                    </optgroup>
-                    <optgroup label="Anglais">
-                        <option value="en-GB" selected>Anglais (Royaume-Uni)</option>
-                        <option value="en-US">Anglais (États-Unis)</option>
-                        <option value="en-ZA">Anglais (Afrique du Sud)</option>
-                        <option value="en-AU">Anglais (Australie)</option>
-                        <option value="en-NZ">Anglais (Nouvelle-Zélande)</option>
-                    </optgroup>
-                    <optgroup label="Allemand">
-                        <option value="de-DE">Allemand (Allemagne)</option>
-                        <option value="de-AT">Allemand (Autriche)</option>
-                        <option value="de-CH">Allemand (Suisse)</option>
-                    </optgroup>
-                    <optgroup label="Portugais">
-                        <option value="pt-PT">Portugais (Portugal)</option>
-                        <option value="pt-BR">Portugais (Brésil)</option>
-                    </optgroup>
-                    <optgroup label="Autres langues européennes">
-                        <option value="es-ES">Espagnol</option>
-                        <option value="it-IT">Italien</option>
-                        <option value="ru-RU">Russe</option>
-                        <option value="el-GR">Grec</option>
-                    </optgroup>
-                    <optgroup label="Langues asiatiques">
-                        <option value="ja-JP">Japonais</option>
-                        <option value="zh-CN">Chinois (Simplifié)</option>
-                        <option value="ar-AR">Arabe</option>
-                    </optgroup>
-                </select>
-                <button type="submit">Générer le résumé</button>
-            </form>
-        </div>
-
-        <div id="result-card" class="result-card">
-            <div class="label">Texte original</div>
-            <div id="texte-original" class="text-box"></div>
-
-            <div class="label">Résumé</div>
-            <div id="texte-resume" class="text-box"></div>
-
-            <div class="label">Mots-clés</div>
-            <div id="mots-cles" class="keywords-container">
-                <!-- Les mots-clés seront injectés ici -->
-            </div>
-        </div>
-
-        <a href="/" class="back-btn">Retour à l'accueil</a>
+    <div class="wave-container">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
     </div>
 
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Éducation Malagasy</h1>
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Accueil</a>
+            <a href="/francais" class="active"><i class="fas fa-language"></i> Français</a>
+            <a href="/index/cours/cours.html"><i class="fas fa-book"></i> Cours</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-title">
+            <span class="sparkle"><i class="fas fa-sparkles"></i></span>
+            <h1>Résumé et mots-clés</h1>
+            <span class="sparkle"><i class="fas fa-sparkles"></i></span>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="summarize">Résumé de texte</button>
+            <button class="tab" data-tab="correction">Correction de texte</button>
+        </div>
+
+        <div class="tab-content active" id="summarizeTab">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="text">Texte à résumer</label>
+                    <textarea class="form-control" id="summarizeText" rows="8" placeholder="Collez votre texte ici..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="language">Langue</label>
+                    <select class="form-control" id="summarizeLanguage">
+                        <option value="fr">Français</option>
+                        <option value="en">Anglais (Royaume-Uni)</option>
+                        <option value="en-US">Anglais (États-Unis)</option>
+                        <option value="es">Espagnol</option>
+                        <option value="de">Allemand</option>
+                        <option value="it">Italien</option>
+                        <option value="pt">Portugais</option>
+                    </select>
+                </div>
+                <button class="btn" id="summarizeBtn">Générer le résumé</button>
+            </div>
+
+            <div class="loader" id="summarizeLoader">
+                <div class="loader-spinner"></div>
+                <p>Génération du résumé en cours...</p>
+            </div>
+
+            <div class="result-container" id="summarizeResult">
+                <h2 class="result-title">Résultat du résumé</h2>
+                
+                <div class="result-section">
+                    <h3>Résumé</h3>
+                    <div class="result-content" id="summaryText"></div>
+                    <button class="copy-btn" data-target="summaryText">
+                        <i class="fas fa-copy"></i> Copier
+                    </button>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Mots-clés</h3>
+                    <div class="keywords-container" id="keywordsContainer"></div>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Passages importants</h3>
+                    <div class="highlights" id="highlightsText"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="correctionTab">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="text">Texte à corriger</label>
+                    <textarea class="form-control" id="correctionText" rows="8" placeholder="Collez votre texte ici..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="language">Langue</label>
+                    <select class="form-control" id="correctionLanguage">
+                        <option value="fr">Français</option>
+                        <option value="en">Anglais (Royaume-Uni)</option>
+                        <option value="en-US">Anglais (États-Unis)</option>
+                        <option value="es">Espagnol</option>
+                        <option value="de">Allemand</option>
+                        <option value="it">Italien</option>
+                        <option value="pt">Portugais</option>
+                    </select>
+                </div>
+                <button class="btn" id="correctionBtn">Corriger le texte</button>
+            </div>
+
+            <div class="loader" id="correctionLoader">
+                <div class="loader-spinner"></div>
+                <p>Correction du texte en cours...</p>
+            </div>
+
+            <div class="result-container" id="correctionResult">
+                <h2 class="result-title">Résultat de la correction</h2>
+                
+                <div class="result-section">
+                    <h3>Texte corrigé</h3>
+                    <div class="result-content" id="correctedText"></div>
+                    <button class="copy-btn" data-target="correctedText">
+                        <i class="fas fa-copy"></i> Copier
+                    </button>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Erreurs détectées</h3>
+                    <div id="errorsContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <span class="pagination-dot active" data-index="0"></span>
+            <span class="pagination-dot" data-index="1"></span>
+            <span class="pagination-dot" data-index="2"></span>
+        </div>
+    </div>
+
+    <div class="status-message" id="statusMessage"></div>
+
+    <footer>
+        <p>&copy; 2024 Éducation Malagasy - Tous droits réservés</p>
+    </footer>
+
     <script>
+        // Generate floating objects
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('summarize-form');
-            const resultCard = document.getElementById('result-card');
-            const texteOriginal = document.getElementById('texte-original');
-            const texteResume = document.getElementById('texte-resume');
-            const motsCles = document.getElementById('mots-cles');
-            const navLinks = document.getElementById('navLinks');
-            const dots = document.querySelectorAll('.dot');
-            const links = navLinks.querySelectorAll('.nav-link');
-
-            // Variables pour le défilement tactile
-            let startX, scrollLeft, isDragging = false;
-            let currentIndex = 2; // Résumé et mots-clés est active (index 2)
-
-            // Initialiser le défilement horizontal
-            function initSwipe() {
-                navLinks.addEventListener('mousedown', startDrag);
-                navLinks.addEventListener('touchstart', startDrag, { passive: true });
-
-                navLinks.addEventListener('mousemove', drag);
-                navLinks.addEventListener('touchmove', drag, { passive: false });
-
-                navLinks.addEventListener('mouseup', endDrag);
-                navLinks.addEventListener('mouseleave', endDrag);
-                navLinks.addEventListener('touchend', endDrag);
-
-                // Ajouter des événements pour les points de navigation
-                dots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => {
-                        scrollToIndex(index);
-                    });
-                });
-
-                // Ajouter des événements pour les indicateurs de défilement
-                document.querySelector('.left-indicator').addEventListener('click', () => {
-                    scrollToIndex(currentIndex - 1);
-                });
-
-                document.querySelector('.right-indicator').addEventListener('click', () => {
-                    scrollToIndex(currentIndex + 1);
-                });
+            const floatingObjects = document.getElementById('floatingObjects');
+            
+            for (let i = 0; i < 20; i++) {
+                const div = document.createElement('div');
+                div.classList.add('floating-object');
+                
+                // Random size
+                const size = Math.random() * 30 + 10;
+                div.style.width = `${size}px`;
+                div.style.height = `${size}px`;
+                
+                // Random position
+                div.style.left = `${Math.random() * 100}%`;
+                div.style.bottom = `-${size}px`;
+                
+                // Random animation duration
+                const duration = Math.random() * 20 + 10;
+                div.style.animationDuration = `${duration}s`;
+                
+                // Random animation delay
+                div.style.animationDelay = `${Math.random() * 10}s`;
+                
+                floatingObjects.appendChild(div);
             }
-
-            // Fonction pour commencer le défilement
-            function startDrag(e) {
-                isDragging = true;
-                startX = e.type === 'touchstart' ? e.touches[0].pageX : e.pageX;
-                scrollLeft = navLinks.scrollLeft;
-                navLinks.style.cursor = 'grabbing';
-            }
-
-            // Fonction pour défiler
-            function drag(e) {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.type === 'touchmove' ? e.touches[0].pageX : e.pageX;
-                const walk = (x - startX);
-                navLinks.scrollLeft = scrollLeft - walk;
-            }
-
-            // Fonction pour terminer le défilement
-            function endDrag() {
-                if (!isDragging) return;
-                isDragging = false;
-                navLinks.style.cursor = 'grab';
-
-                // Identifier l'élément le plus proche du centre et y défiler
-                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
-                const scrollSnapIndex = Math.round(navLinks.scrollLeft / linkWidth);
-                scrollToIndex(scrollSnapIndex);
-            }
-
-            // Faire défiler vers un index spécifique
-            function scrollToIndex(index) {
-                if (index < 0) index = 0;
-                if (index >= links.length) index = links.length - 1;
-
-                currentIndex = index;
-
-                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
-                navLinks.scrollTo({
-                    left: linkWidth * index,
-                    behavior: 'smooth'
+            
+            // Tab switching logic
+            const tabButtons = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Toggle active class on buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Toggle active class on content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
                 });
-
-                // Mettre à jour les points
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
-            }
-
-            // Naviguer vers la page correspondante quand l'index change
-            navLinks.addEventListener('scroll', function() {
-                const linkWidth = links[0].offsetWidth + parseInt(getComputedStyle(links[0]).marginLeft) * 2;
-                const scrollIndex = Math.round(navLinks.scrollLeft / linkWidth);
-
-                if (scrollIndex !== currentIndex) {
-                    currentIndex = scrollIndex;
-                    dots.forEach((dot, i) => {
-                        dot.classList.toggle('active', i === currentIndex);
-                    });
-
-                    // Si l'utilisateur fait défiler vers un autre onglet, naviguer vers cette page
-                    if (currentIndex === 0) {
-                        window.location.href = '/francais';
-                    } else if (currentIndex === 1) {
-                        window.location.href = '/grammaire';
-                    }
-                }
             });
-
-            // Initialiser le défilement horizontal
-            initSwipe();
-
-            // Gérer la soumission du formulaire
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const texte = document.getElementById('texte-input').value;
-                const langue = document.getElementById('langue-select').value;
-
-                if (!texte) return;
-
-                texteOriginal.textContent = texte;
-
-                try {
-                    // Appel à l'API de résumé
-                    const response = await fetch('/api/summarize/generate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ text: texte, language: langue })
+            
+            // Pagination dots
+            const dots = document.querySelectorAll('.pagination-dot');
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.getAttribute('data-index'));
+                    
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    
+                    // Here you would implement carousel functionality if needed
+                });
+            });
+            
+            // Copy button functionality
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    const text = document.getElementById(targetId).textContent;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        showStatusMessage('Texte copié !');
+                    }).catch(err => {
+                        showStatusMessage('Erreur lors de la copie');
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    
-                    // Afficher le résumé
-                    texteResume.textContent = result.summary;
-                    
-                    // Afficher les mots-clés
-                    motsCles.innerHTML = '';
-                    result.keywords.forEach(keyword => {
-                        const keywordElement = document.createElement('span');
-                        keywordElement.classList.add('keyword');
-                        keywordElement.textContent = keyword;
-                        motsCles.appendChild(keywordElement);
-                    });
-                    
-                    // Afficher les résultats
-                    resultCard.style.display = 'block';
-                    resultCard.scrollIntoView({ behavior: 'smooth' });
-                    
-                } catch (error) {
-                    console.error('Erreur:', error);
-                    texteResume.textContent = `Erreur: ${error.message}`;
-                    motsCles.innerHTML = '<p>Une erreur est survenue lors de la génération des mots-clés.</p>';
-                    resultCard.style.display = 'block';
-                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            function showStatusMessage(message) {
+                const statusMessage = document.getElementById('statusMessage');
+                statusMessage.textContent = message;
+                statusMessage.classList.add('show');
+                
+                setTimeout(() => {
+                    statusMessage.classList.remove('show');
+                }, 2000);
+            }
+            
+            // API calls for summarize functionality
+            const summarizeBtn = document.getElementById('summarizeBtn');
+            
+            summarizeBtn.addEventListener('click', () => {
+                const text = document.getElementById('summarizeText').value;
+                const language = document.getElementById('summarizeLanguage').value;
+                
+                if (!text) {
+                    showStatusMessage('Veuillez entrer un texte');
+                    return;
                 }
+                
+                // Show loader
+                document.getElementById('summarizeLoader').classList.add('show');
+                document.getElementById('summarizeResult').classList.remove('show');
+                
+                // API call
+                fetch('/api/summarize/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text, language })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loader
+                    document.getElementById('summarizeLoader').classList.remove('show');
+                    
+                    if (data.error) {
+                        showStatusMessage('Erreur: ' + data.error);
+                        return;
+                    }
+                    
+                    // Display results
+                    document.getElementById('summaryText').textContent = data.summary;
+                    
+                    // Display keywords
+                    const keywordsContainer = document.getElementById('keywordsContainer');
+                    keywordsContainer.innerHTML = '';
+                    
+                    data.keywords.forEach(keyword => {
+                        const span = document.createElement('span');
+                        span.classList.add('keyword');
+                        span.textContent = keyword;
+                        keywordsContainer.appendChild(span);
+                    });
+                    
+                    // Display highlights
+                    const highlightsText = document.getElementById('highlightsText');
+                    highlightsText.innerHTML = '';
+                    
+                    if (data.highlights && data.highlights.length > 0) {
+                        data.highlights.forEach(highlight => {
+                            const p = document.createElement('p');
+                            p.textContent = `"${highlight}"`;
+                            highlightsText.appendChild(p);
+                        });
+                    } else {
+                        highlightsText.textContent = 'Aucun passage important détecté.';
+                    }
+                    
+                    // Show results
+                    document.getElementById('summarizeResult').classList.add('show');
+                })
+                .catch(error => {
+                    document.getElementById('summarizeLoader').classList.remove('show');
+                    showStatusMessage('Erreur de connexion');
+                    console.error('Error:', error);
+                });
+            });
+            
+            // API calls for correction functionality
+            const correctionBtn = document.getElementById('correctionBtn');
+            
+            correctionBtn.addEventListener('click', () => {
+                const text = document.getElementById('correctionText').value;
+                const language = document.getElementById('correctionLanguage').value;
+                
+                if (!text) {
+                    showStatusMessage('Veuillez entrer un texte');
+                    return;
+                }
+                
+                // Show loader
+                document.getElementById('correctionLoader').classList.add('show');
+                document.getElementById('correctionResult').classList.remove('show');
+                
+                // API call
+                fetch('/api/grammar/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text, language })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loader
+                    document.getElementById('correctionLoader').classList.remove('show');
+                    
+                    if (data.error) {
+                        showStatusMessage('Erreur: ' + data.error);
+                        return;
+                    }
+                    
+                    // Display corrected text
+                    document.getElementById('correctedText').textContent = data.corrected;
+                    
+                    // Display errors
+                    const errorsContainer = document.getElementById('errorsContainer');
+                    errorsContainer.innerHTML = '';
+                    
+                    if (data.errors && data.errors.length > 0) {
+                        data.errors.forEach(error => {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.classList.add('error-item');
+                            errorDiv.innerHTML = `
+                                <p><strong>Erreur:</strong> ${error.text}</p>
+                                <p><strong>Suggestion:</strong> ${error.suggestions.join(', ')}</p>
+                                <p><strong>Message:</strong> ${error.message}</p>
+                                <hr>
+                            `;
+                            errorsContainer.appendChild(errorDiv);
+                        });
+                    } else {
+                        errorsContainer.textContent = 'Aucune erreur détectée.';
+                    }
+                    
+                    // Show results
+                    document.getElementById('correctionResult').classList.add('show');
+                })
+                .catch(error => {
+                    document.getElementById('correctionLoader').classList.remove('show');
+                    showStatusMessage('Erreur de connexion');
+                    console.error('Error:', error);
+                });
             });
         });
     </script>
