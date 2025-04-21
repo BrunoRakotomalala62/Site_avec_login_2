@@ -1,8 +1,10 @@
 const express = require('express');
+const app = express();
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
+const grammarRouter = require('./pilot/grammar');
 
 const app = express();
 const PORT = process.env.PORT || 4040;
@@ -253,13 +255,13 @@ app.get('/index/cours/2nde/malagasy/malagasy2nde.html', (req, res) => {
 app.get('/Attachement/index/cours/:niveau/malagasy/:filename', (req, res) => {
   const niveau = req.params.niveau;
   const filename = req.params.filename;
-  
+
   // Ajouter les en-têtes appropriés pour le téléchargement
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  
+
   res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', niveau, 'malagasy', filename));
 });
 
@@ -271,16 +273,36 @@ app.get('/index/cours/3eme/physique3e/physique3e.html', (req, res) => {
 // Route pour servir les fichiers PDF de physique
 app.get('/Attachement/index/cours/3eme/physique3e/:filename', (req, res) => {
   const filename = req.params.filename;
-  
+
   // Ajouter les en-têtes appropriés pour le téléchargement
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  
+
   res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', '3eme', 'physique3e', filename));
 });
 
+
+// Routes statiques
+app.use(express.static('public'));
+
+// API routes
+app.use('/api/grammar', grammarRouter);
+
+// Route principale
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Routes pour les pages françaises
+app.get('/francais', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index', 'Francais', 'francais.html'));
+});
+
+app.get('/grammaire', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index', 'Francais', 'grammaire.html'));
+});
 
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
