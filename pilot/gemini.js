@@ -12,16 +12,18 @@ const upload = multer({
 
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
-  console.error('Error: GEMINI_API_KEY environment variable is not set');
-  throw new Error('GEMINI_API_KEY is required');
+  console.warn('Warning: GEMINI_API_KEY environment variable is not set. Gemini features will not work.');
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
+const model = genAI ? genAI.getGenerativeModel({ model: "gemini-2.0-flash" }) : null;
 
 let chatSession = null;
 
 async function handleChat(message, files = []) {
+  if (!model) {
+    throw new Error('Le service AI n\'est pas configuré (Clé API manquante)');
+  }
   try {
     if (!chatSession) {
       chatSession = model.startChat({
